@@ -9,7 +9,6 @@ int main()
     Hero h1;
 
     Hero *h2 = new Hero;
-    delete h2;
 }
 // {
 //     Hero h;
