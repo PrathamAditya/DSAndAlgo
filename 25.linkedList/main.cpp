@@ -141,13 +141,26 @@ void deleteTail(Node *&head)
     temp->next = NULL;
 }
 
-void deletePosition(Node *head, int p)
+void deletePosition(Node *&head, int p)
 {
-    if (p == 0)
+    Node *temp = head;
+    if (p == 1)
     {
         deleteHead(head);
     }
-    Node *temp;
+    else if (head->next == NULL)
+    {
+    }
+    else
+    {
+        for (int i = 1; i <= p - 1; i++)
+        {
+            temp = temp->next;
+        }
+        Node *x = temp->next;
+        temp->next = temp->next->next;
+        delete x;
+    }
 }
 
 void print(Node *head)
@@ -171,10 +184,14 @@ int main()
     insertATHead(head, 1);
     insertATHead(head, 0);
     insertAtMiddle(head, tail, 22, 10);
+    insertATHead(head, 10);
+    insertATHead(head, 100);
     print(head);
-    deleteHead(head);
+    deletePosition(head, 5);
     print(head);
-    deleteTail(head);
-    print(head);
-    print(head);
+
+    // deleteHead(head);
+    // print(head);
+    // deleteTail(head);
+    // print(head);
 }
