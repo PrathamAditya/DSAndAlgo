@@ -130,6 +130,7 @@ void deleteTail(Node *&head)
     else if (head->next == NULL)
     {
         delete head;
+        head = NULL;
         return;
     }
     Node *temp = head;
@@ -150,6 +151,10 @@ void deletePosition(Node *&head, int p)
     }
     else if (head->next == NULL)
     {
+        cout << "Last node deleted!"
+             << "\n";
+        head = NULL;
+        delete head;
     }
     else
     {
@@ -163,32 +168,133 @@ void deletePosition(Node *&head, int p)
     }
 }
 
-void print(Node *head)
+int search(Node *head, int key)
 {
-    while (head != NULL)
+    Node *temp = head;
+    int c = 0;
+    while (temp != NULL)
     {
-        cout << head->data << " ";
-        head = head->next;
+        if (temp->data == key)
+        {
+            return c;
+        }
+        c++;
+        temp = temp->next;
     }
-
-    cout << "\n";
+    return -1;
 }
 
-int main()
+bool searchRec(Node *head, int key)
+{
+    if (head == NULL)
+    {
+        return false;
+    }
+    else
+    {
+        if (head->data == key)
+        {
+            return true;
+        }
+        else
+        {
+            return searchRec(head->next, key);
+        }
+    }
+}
+
+Node *takeInput1()
 {
     Node *head = NULL;
     Node *tail = NULL;
-    insertATHead(head, 4);
-    tail = head;
-    insertATHead(head, 3);
-    insertATHead(head, 1);
-    insertATHead(head, 0);
-    insertAtMiddle(head, tail, 22, 10);
-    insertATHead(head, 10);
-    insertATHead(head, 100);
+    int d;
+    cin >> d;
+    while (d != -1)
+    {
+        insertATHead(head, d);
+
+        cin >> d;
+    }
+    return head;
+}
+
+void reverseLL(Node *&head)
+{
+    if (head == NULL)
+    {
+        cout << "Null"
+             << "\n";
+        return;
+    }
+    else if (head->next == NULL)
+    {
+        cout << "Done!"
+             << "\n";
+        return;
+    }
+    else if (head->next->next == NULL)
+    {
+        Node *temp = head;
+        Node *t2 = head->next->next;
+        head->next = temp;
+        t2->next = ;
+    }
+    else
+    {
+        Node *t1 = NULL;
+        Node *t2 = head;
+        Node *t3 = head->next;
+        Node *t4 = head->next->next;
+    }
+}
+
+void print(Node *head)
+{
+    if (head == NULL)
+    {
+        cout << "List is empty";
+    }
+    else
+    {
+        while (head != NULL)
+        {
+            cout << head->data << " ";
+            head = head->next;
+        }
+    }
+    cout << "\n";
+}
+
+// Node *takeInput2()
+// {
+//     Node *head = NULL;
+//     Node *tail = NULL;
+//     int d;
+//     while (cin >> d)
+//     {
+//         insertATHead(head, d);
+//         cout << "s"
+//              << "\n";
+//     }
+//     return head;
+// }
+
+int main()
+{
+    Node *head = takeInput1();
+
+    // Node *tail = NULL;
+    // insertATHead(head, 4);
+    // tail = head;
+    // insertATHead(head, 3);
+    // insertATHead(head, 1);
+    // insertATHead(head, 0);
+    // insertAtMiddle(head, tail, 22, 10);
+    // insertATHead(head, 10);
+    // insertATHead(head, 100);
     print(head);
-    deletePosition(head, 5);
-    print(head);
+    // deletePosition(head, 5);
+    // print(head);
 
     // deleteHead(head);
     // print(head);
