@@ -6,15 +6,27 @@ using namespace std;
 void stockSpan(int prices[], int n, int span[])
 {
     stack<int> s1;
-    stack<int> s2;
-    s1.push(prices[0]);
-    s2.push(0);
+    s1.push(0);
     span[0] = 1;
 
     for (int i = 1; i < n; i++)
     {
         int curPrice = prices[i];
-        while (!s1.empty() and)
+        int topp = s1.top();
+        while (!s1.empty() and prices[s1.top()] <= curPrice)
+        {
+            s1.pop();
+        }
+        if (!s1.empty())
+        {
+            int preHighest = s1.top();
+            span[i] = i - preHighest;
+        }
+        else
+        {
+            span[i] = i + 1;
+        }
+        s1.push(i);
     }
 }
 
