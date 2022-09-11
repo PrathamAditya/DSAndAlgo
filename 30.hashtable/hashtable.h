@@ -64,6 +64,35 @@ private:
         }
         return idx;
     }
+    void rehash()
+    {
+        Node<T> **oldTable = table;
+        int oldTableSize = tableSize;
+        // or you select next prime!
+        tableSize = 2 * tableSize;
+        table = new Node<T> *[tableSize];
+        for (int i = 0; i < tableSize; i++)
+        {
+            table[i] = NULL;
+        }
+        currentSize = 0;
+        for (int i = 0; i < tableSize; i++)
+        {
+            Node<T> *temp = oldTable[i];
+            while (temp != NULL)
+            {
+                insert(temp->key, temp->value);
+                temp = temp->next;
+            }
+            // delete the chain
+            if (oldTable[i] != NULL)
+            {
+                // this is going tbe recurssive destructor call
+                delete oldTable[i];
+            }
+        }
+        delete oldTable;
+    }
 
 public:
     Hashtable(int ts = 7)
@@ -71,37 +100,9 @@ public:
         this->tableSize = ts;
         table = new Node<T> *[tableSize];
         currentSize = 0;
-        loadFactor = 0;
         for (int i = 0; i < tableSize; i++)
         {
             table[i] = NULL;
-        }
-    }
-
-    void rehash()
-    {
-        vector<Pair> A;
-        for (int i = 0; i < tableSize; i++)
-        {
-            Node<T> *temp = table[i];
-            while (temp != NULL)
-            {
-                Pair x;
-                x.value = temp->value;
-                x.key = temp->key;
-                A.push_back(x);
-                temp = temp->next;
-            }
-        }
-        Node<T> **temp = table;
-        tableSize = tableSize * 2 + 3;
-        table = new Node<T> *[tableSize];
-        currentSize = 0;
-
-        for (int i = 0; i < A.size(); i++)
-        {
-            Pair x = A[0];
-            insert(x.key, x.value);
         }
     }
 
@@ -112,10 +113,10 @@ public:
         n->next = table[idx];
         table[idx] = n;
         currentSize++;
-        loadFactor = (currentSize / tableSize);
 
         // rehash...
-        if (loadFactor >= 0.75)
+        float loadFactor = (currentSize / 1.0 * tableSize);
+        if (loadFactor > 0.7)
         {
             rehash();
         }
