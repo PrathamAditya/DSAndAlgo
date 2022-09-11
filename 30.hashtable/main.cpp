@@ -1,62 +1,18 @@
 #include <iostream>
-#include <string>
+#include "hashtable.h"
 
 using namespace std;
-template <typenameT>
-class Node
-{
-private:
-    string key;
-    T value;
-    Node<T> *next;
-
-public:
-    Node(string key, T value)
-    {
-        this->value = value;
-        this->key = key;
-        next = NULL;
-    }
-    ~Node()
-    {
-        if (next != NULL)
-        {
-            delete next;
-        }
-    }
-};
-
-template <typename T>
-class Hashtable
-{
-    Node<T> **table;
-    int currentSize;
-    int tableSize;
-
-public:
-    Hashtable(int ts = 7)
-    {
-        this->tableSize = ts;
-        table = new Node<T> *[tableSize];
-        currentSize = 0;
-        for (int i = 0; i < table; i++)
-        {
-            table[i] = NULL;
-        }
-    }
-
-    void insert(string k, T value)
-    {
-    }
-
-    T search(string key)
-    {
-    }
-    void erase(string key)
-    {
-    }
-};
-
 int main()
 {
+    Hashtable<int> price_menu;
+    price_menu.insert("Burger", 120);
+    price_menu.insert("Pepsi", 20);
+    price_menu.insert("Bantaa", 15);
+    price_menu.insert("Indo Tandoori Pizza", 775);
+    // price_menu.insert("Coke", 30);
+    // price_menu.insert("Coke(yeah that one)", 5000);
+
+    price_menu.print();
+    cout << "\n";
+    cout << price_menu.getLF();
 }
