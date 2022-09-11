@@ -76,7 +76,7 @@ private:
             table[i] = NULL;
         }
         currentSize = 0;
-        for (int i = 0; i < tableSize; i++)
+        for (int i = 0; i < oldTableSize; i++)
         {
             Node<T> *temp = oldTable[i];
             while (temp != NULL)
@@ -115,11 +115,11 @@ public:
         currentSize++;
 
         // rehash...
-        float loadFactor = (currentSize / 1.0 * tableSize);
-        if (loadFactor > 0.7)
-        {
-            rehash();
-        }
+        loadFactor = (1.0 * currentSize / 1.0 * tableSize);
+        // if (loadFactor >= 0.7)
+        // {
+        //     rehash();
+        // }
     }
     void print()
     {
