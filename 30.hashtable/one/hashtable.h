@@ -1,17 +1,8 @@
 #include <iostream>
 #include <string>
-#include <vector>
+#include "primeShit.h"
 
 using namespace std;
-
-// int nextPrime(int n)
-// {
-//     int x = 0;
-//     for (int i = n; i <= n * n; i++)
-//     {
-//         if(i%)
-//     }
-// }
 
 class Pair
 {
@@ -50,7 +41,7 @@ private:
     Node<T> **table;
     int currentSize;
     int tableSize;
-    float loadFactor;
+    float loadFactor = 0;
     int hashFn(string key)
     {
         int idx = 0;
@@ -69,7 +60,7 @@ private:
         Node<T> **oldTable = table;
         int oldTableSize = tableSize;
         // or you select next prime!
-        tableSize = 2 * tableSize;
+        tableSize = nextPrime(2 * tableSize);
         table = new Node<T> *[tableSize];
         for (int i = 0; i < tableSize; i++)
         {
@@ -115,11 +106,12 @@ public:
         currentSize++;
 
         // rehash...
-        loadFactor = (1.0 * currentSize / 1.0 * tableSize);
-        // if (loadFactor >= 0.7)
-        // {
-        //     rehash();
-        // }
+        loadFactor = tableSize;
+        loadFactor = (currentSize / loadFactor);
+        if (loadFactor >= 0.7)
+        {
+            rehash();
+        }
     }
     void print()
     {
@@ -139,11 +131,73 @@ public:
     {
         return loadFactor;
     }
-
-    T search(string key)
+    int getTableSize()
     {
+        return tableSize;
+    }
+
+    T *search(string key)
+    {
+        bool flag = 1;
+        for (int i = 0; i < tableSize; i++)
+        {
+            Node<T> *temp = table[i];
+            while (temp != NULL)
+            {
+                if (temp->key == key)
+                {
+                    flag = 0;
+                    return &temp->value;
+                }
+                temp = temp->next;
+            }
+        }
+        return NULL;
+    }
+
+    T &operator[](string key)
+    {
+        T *f = search(key);
+        if (f == NULL)
+        {
+            T garbage;
+            insert(key, garbage);
+            f = search(key);
+        }
+        return *f;
     }
     void erase(string key)
     {
+        bool flag = 0;
+        for (int i = 0; i < tableSize; i++)
+        {
+            Node<T> *temp = table[i];
+            Node<T> *temp2 = table[i];
+            while (temp != NULL)
+            {
+                if (temp->key == key)
+                {
+                    flag = 1;
+                    if (temp->next == NULL)
+                    {
+                        temp2->next = NULL;
+                        delete temp;
+                    }
+                    else
+                    {
+                        temp2->next = temp->next;
+                        delete temp;
+                    }
+                    break;
+                }
+                temp2 = temp;
+                temp = temp->next;
+            }
+        }
+        if (!flag)
+        {
+            cout << "The key is not present!"
+                 << "\n";
+        }
     }
 };
