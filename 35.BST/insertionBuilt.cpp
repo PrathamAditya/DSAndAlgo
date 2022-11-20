@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <climits>
 
 using namespace std;
 
@@ -9,12 +10,14 @@ public:
     int data;
     Node *left;
     Node *right;
+    Node *next;
 
     Node(int data)
     {
         this->data = data;
         left = NULL;
         right = NULL;
+        next = NULL;
     }
 };
 
@@ -224,24 +227,87 @@ Node *deleteNode_(Node *root, int data)
     root->right = deleteNode_(root->right, data);
     return root;
 }
+
+bool isBST(Node *root)
+{
+    if (root->left == NULL and root->right == NULL)
+    {
+        return 1;
+    }
+    else if (root->left and root->right)
+    {
+        if (root->data > root->left->data and root->data < root->right->data)
+        {
+            return isBST(root->left);
+            return isBST(root->right);
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else if (root->left != NULL and root->right == NULL)
+    {
+        if (root->data > root->left->data)
+        {
+            return isBST(root->left);
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else if (root->left == NULL and root->right != NULL)
+    {
+        if (root->data < root->right->data)
+        {
+            return isBST(root->right);
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+bool isBST_(Node *root, int minV = INT_MIN, int maxV = INT_MAX)
+{
+    if (root == NULL)
+    {
+        return 1;
+    }
+    if (minV <= root->data <= maxV)
+    {
+        bool a = isBST_(root->left, minV, root->data);
+        bool b = isBST_(root->right, root->data, maxV);
+        if (a and b)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+void flattenBT(Node *root)
+{
+    
+}
 int main()
 {
     Node *root = built();
 
-    int n;
-    cin >> n;
+    inorder(root);
+    cout << "\n";
 
-    root = deleteNode(root, n);
-    cout << "------ "
-         << "\n";
-    bfs(root);
-    cout << "------ "
-         << "\n";
-    root = deleteNode_(root, n);
-    cout << "------ "
-         << "\n";
-
-    bfs(root);
+    if (isBST_(root))
+    {
+        cout << "Yes"
+             << "\n";
+    }
+    else
+    {
+        cout << "NO"
+             << "\n";
+    }
 
     return 0;
 }

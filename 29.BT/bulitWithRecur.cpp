@@ -344,7 +344,10 @@ void printRightView2(Node *root)
     }
 }
 
-int main()
+
+
+int
+main()
 {
     // int in[] = {3, 2, 8, 4, 1, 6, 7, 5};
     // int pre[] = {1, 2, 3, 4, 8, 5, 6, 7};
